@@ -1,10 +1,7 @@
 package services;
 import entities.Funcionario;
-import java.text.NumberFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class FuncionarioAdm{
     private final List<Funcionario> funcionarios = new ArrayList<>();
@@ -17,6 +14,11 @@ public class FuncionarioAdm{
         return this.funcionarios;
     }    
 
+    public void adicionarFuncionario(Funcionario funcionario) {
+        this.funcionarios.add(funcionario);
+    }
+
+    
     public void listarTodosFuncionarios(String datePattern){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(datePattern);
 
