@@ -85,7 +85,7 @@ João,12/05/1990,2284.38,Operador
 3. Execute a classe principal:
 
 ```bash
-java Program
+java ./src/Program.java
 ```
 
 ---
