@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class FuncionarioAdm{
     private final List<Funcionario> funcionarios = new ArrayList<>();
@@ -95,6 +96,19 @@ public class FuncionarioAdm{
                     + " " + nf.format(func.getSalario())
                     + " " + func.getFuncao());
                 }
+    }
+
+    public Funcionario buscarFuncionarioMaisVelho(){
+        return this.getFuncionarios()
+        .stream()
+        .min((e1, e2) -> e1.getDataNascimento().compareTo(e2.getDataNascimento())).orElse(null);
+    }
+
+    public List<Funcionario> ordenarFuncionarios(){
+        return this.getFuncionarios()
+        .stream()
+        .sorted((e1,e2) -> e1.getNome().compareTo(e2.getNome()))
+        .collect(Collectors.toList());
     }
 
     
