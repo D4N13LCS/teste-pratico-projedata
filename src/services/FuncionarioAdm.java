@@ -111,5 +111,13 @@ public class FuncionarioAdm{
         .collect(Collectors.toList());
     }
 
+    public BigDecimal somarTodoSalarios(){
+        BigDecimal sal = new BigDecimal("0.00");
+        for(Funcionario f: this.getFuncionarios()){
+            sal = sal.add(f.getSalario());
+        }
+        return sal;
+    }
+
     
 }
