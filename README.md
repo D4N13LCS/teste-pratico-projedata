@@ -64,17 +64,17 @@ João,12/05/1990,2284.38,Operador
 
 ## ⚙️ Funcionalidades implementadas
 
-✔ Inserção de funcionários via arquivo CSV
-✔ Remoção de funcionário por nome
-✔ Listagem completa dos funcionários com formatação
-✔ Aumento de salário em 10%
-✔ Agrupamento por função (`Map<String, List<Funcionario>>`)
-✔ Listagem de funcionários agrupados por função
-✔ Filtro de aniversariantes (meses 10 e 12)
-✔ Identificação do funcionário mais velho
-✔ Ordenação alfabética
-✔ Cálculo do total de salários
-✔ Cálculo de quantos salários mínimos cada funcionário recebe
+✔ Inserção de funcionários via arquivo CSV <br/>
+✔ Remoção de funcionário por nome <br/>
+✔ Listagem completa dos funcionários com formatação <br/>
+✔ Aumento de salário em 10% <br/>
+✔ Agrupamento por função (`Map<String, List<Funcionario>>`) <br/>
+✔ Listagem de funcionários agrupados por função <br/>
+✔ Filtro de aniversariantes (meses 10 e 12) <br/>
+✔ Identificação do funcionário mais velho <br/>
+✔ Ordenação alfabética <br/>
+✔ Cálculo do total de salários <br/>
+✔ Cálculo de quantos salários mínimos cada funcionário recebe <br/>
 
 ---
 
