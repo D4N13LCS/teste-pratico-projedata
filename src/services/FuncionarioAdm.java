@@ -27,6 +27,13 @@ public class FuncionarioAdm{
         this.funcionarios.add(funcionario);
     }
 
+    public void aumentarTodosSalarios(BigDecimal percentual){
+        for(Funcionario func: this.funcionarios){
+            BigDecimal fator = BigDecimal.ONE.add(percentual);
+            func.setSalario(func.getSalario().multiply(fator));
+        }
+    }
+
     public void cadastrarFuncionarios(String dirPath, String datePattern){
         Funcionario funcionario;
         
@@ -53,7 +60,11 @@ public class FuncionarioAdm{
         }
     
     }
-    
+
+    public void removerFuncionario(String nome){
+        this.funcionarios.removeIf(f -> f.getNome().equals(nome));
+    }
+
     public void listarTodosFuncionarios(String datePattern){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(datePattern);
 
@@ -69,5 +80,5 @@ public class FuncionarioAdm{
                 }
     }
 
-   
+    
 }
