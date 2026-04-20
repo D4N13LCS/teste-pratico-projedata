@@ -119,5 +119,14 @@ public class FuncionarioAdm{
         return sal;
     }
 
-    
+    public void buscarQuantidadeSalarioMinimo() {
+        BigDecimal minimumSal = new BigDecimal("1212.00");
+
+        for (Funcionario f : this.funcionarios) {
+            BigDecimal resultado = f.getSalario().divideToIntegralValue(minimumSal);
+            int qty = resultado.intValue();
+
+            System.out.println(f.getNome() + ": " + qty);
+        }
+    }
 }
