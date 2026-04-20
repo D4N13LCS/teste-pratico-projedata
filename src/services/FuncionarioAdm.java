@@ -7,8 +7,10 @@ import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
 
 public class FuncionarioAdm{
@@ -65,6 +67,21 @@ public class FuncionarioAdm{
         this.funcionarios.removeIf(f -> f.getNome().equals(nome));
     }
 
+    public Map<String, List<Funcionario>> agruparFuncionariosPorFuncao(){
+        Map<String, List<Funcionario>> funcAgrupados = new HashMap<>();
+        for(Funcionario func: this.funcionarios){
+            String funcao = func.getFuncao();
+
+            if(!funcAgrupados.containsKey(funcao)){
+                funcAgrupados.put(funcao, new ArrayList<>());
+            }
+
+            funcAgrupados.get(funcao).add(func);
+        }
+        
+        return funcAgrupados;
+    }
+    
     public void listarTodosFuncionarios(String datePattern){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(datePattern);
 
