@@ -1,60 +1,88 @@
 
 import entities.Funcionario;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import services.FuncionarioAdm;
+import services.FuncionarioFileReader;
+import services.FuncionarioService;
 
 public class Program{
-    public static void main(String[] args){
-        Locale.setDefault(Locale.US);
-        readEmployees();
-    }
 
-    public static void readEmployees(){
-        // Inserir funcionários
-        FuncionarioAdm funcionarioAdm = new FuncionarioAdm();
-        funcionarioAdm.cadastrarFuncionarios("C:\\Users\\DELL\\Documents\\original_file.csv", "dd/MM/yyyy");
+    public static void main(String[] args) {
+        FuncionarioFileReader reader = new FuncionarioFileReader();
 
-        // Remover funcionário João
-        funcionarioAdm.removerFuncionario("João");
+        List<Funcionario> funcionarios =
+                reader.carregar("C:\\Users\\DELL\\Desktop\\projedata\\funcionarios.csv", "dd/MM/yyyy");
 
-        // Imprimir todos os funcionários
 
-        funcionarioAdm.listarTodosFuncionarios("dd/MM/yyyy");
+        FuncionarioService service = new FuncionarioService(funcionarios);
 
-        // Aumentar o salário de todos os funcionários em 10%
-        funcionarioAdm.aumentarTodosSalarios(new BigDecimal("0.1"));
-        funcionarioAdm.listarTodosFuncionarios("dd/MM/yyyy");
+        // Remover funcionário da lista
+        service.removerFuncionario("João");
 
-        // Agrupar funcionários por função
-        Map<String, List<Funcionario>> mapa = funcionarioAdm.agruparFuncionariosPorFuncao();
+        // Listar funcionários
+        System.out.println("lista de funcionários:\n");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("pt", "BR"));
+        nf.setMinimumFractionDigits(2);
 
-        // Listar funcionários agrupados por função
-        for(String func: mapa.keySet()){
-            System.out.print("\n" + func + ": ");
-            mapa.get(func).forEach(f -> System.out.print(f.getNome() + " "));
-            
+        for (Funcionario f : funcionarios) {
+            System.out.println(
+                    f.getId() + " " +
+                    f.getNome() + " " +
+                    f.getDataNascimento().format(formatter) + " " +
+                    nf.format(f.getSalario()) + " " +
+                    f.getFuncao()
+            );
         }
 
-        // Listar funcionários nascidos no mês 10 e 12
-        funcionarioAdm.getFuncionarios()
-        .stream()
-        .filter(f -> f.getDataNascimento().getMonthValue() == 10 || 
-        f.getDataNascimento().getMonthValue() == 12)
-        .forEach(f -> System.out.println(f.getNome() + " " + f.getDataNascimento()));
-        
-        // Listar o funcionário mais velho
-        System.err.println(funcionarioAdm.buscarFuncionarioMaisVelho());
-        
-        // Listar funcionários por ordem alfabética
-        funcionarioAdm.ordenarFuncionarios().forEach(f -> System.out.println(f.getNome()));
+        // Aumentar salário em 10%
+        service.aumentarTodosSalarios(new BigDecimal("0.10"));
 
-        // Total dos salários 
-        System.out.println(funcionarioAdm.somarTodoSalarios());
+        // Agrupar os funcionários por função
+        System.out.println("\nfuncionários agrupados por função:");
 
-        // Quantidade de salários mínimos que cada funcionário ganha
-        funcionarioAdm.buscarQuantidadeSalarioMinimo();
+        Map<String, List<Funcionario>> funcionariosAgrupados = service.agruparFuncionariosPorFuncao();
+        
+        for(String func: funcionariosAgrupados.keySet()){
+            System.out.print("\n" + func + ": ");
+            funcionariosAgrupados.get(func).forEach(f -> System.out.print(f.getNome() + " "));
+        }
+
+        // funcionários que fazem aniversário no mês 10 e 12
+        System.out.println("\n\nfuncionários que fazem aniversário no mês 10 e 12:\n");
+        service.buscarPorMesDeNascimento()
+        .forEach(f -> System.out.println("Nome: " + f.getNome() + " | Data de nascimento: " + f.getDataNascimento().format(formatter)));
+
+        // Funcionário mais velho
+
+        System.out.println("\n\nfuncionário mais velho:");
+
+        Funcionario maisVelho = service.buscarFuncionarioMaisVelho();
+        System.out.println("Nome: " + maisVelho.getNome() + "\nIdade: " + maisVelho.getIdade());
+
+        System.out.println("\nlista de funcionários em ordem alfabética:\n");
+        
+        service.ordenarFuncionarios().forEach(f -> 
+            System.out.println(
+                f.getId() + " " +
+                f.getNome() + " " +
+                f.getDataNascimento().format(formatter) + " " +
+                nf.format(f.getSalario()) + " " +
+                f.getFuncao()
+            )
+        );
+
+        // Total salários
+        System.out.println("\nTotal salários: " + service.somarTodoSalarios());
+        
+        // Salários mínimos
+        System.out.println("\nSalários mínimos:");
+        service.buscarQuantidadeSalarioMinimo()
+                .forEach((func, qtd) ->
+                        System.out.println(func + ": " + qtd));
     }
 }
